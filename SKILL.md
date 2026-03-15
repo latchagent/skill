@@ -13,6 +13,8 @@ All requests use your API key as a Bearer token:
 Authorization: Bearer $CLAWCARD_API_KEY
 ```
 
+The API key is stored in `~/.clawcard/.env`. Read `CLAWCARD_API_KEY` from that file.
+
 Base URL: `https://www.clawcard.sh`
 
 ## Step 1: Discover Your Identity
