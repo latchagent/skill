@@ -107,6 +107,26 @@ View activity log:
 clawcard agent activity --json [--limit 50]
 ```
 
+## Paying on Checkout Pages
+
+When you reach a payment form:
+1. Fill all non-payment fields yourself (name, email, address)
+2. Create a card if needed:
+   ```
+   clawcard agent cards create --amount <cents> --type single_use --memo "desc" --json
+   ```
+3. Try filling card fields yourself first (card number, expiry, CVC)
+4. If you can't access the card fields (iframe/cross-origin), run:
+   ```
+   clawcard agent pay --card-id <card-id> --json
+   ```
+   This sends the card details to the ClawCard browser extension which
+   fills payment form fields that are inside iframes you can't reach.
+5. If the extension is not installed, this will return an error —
+   fall back to telling the user they need the extension installed.
+6. After running pay, wait a moment then verify the fields are filled
+   before clicking the submit/pay button.
+
 ## Tips
 
 - Always run `clawcard agent info --json` first to verify your identity.
