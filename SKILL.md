@@ -1,184 +1,116 @@
 ---
 name: clawcard
-description: Email, SMS, virtual cards, and credential vault for autonomous agents. Gives your agent a real email inbox, US phone number, virtual Mastercards with spend limits, and encrypted credential storage.
+description: Email, SMS, virtual cards, and credential vault for autonomous agents. Run clawcard agent commands to interact with your resources.
 ---
 
-You have access to **ClawCard** — a platform that gives you a real email address, phone number, virtual debit cards, and an encrypted credential vault.
+You have access to ClawCard via the `clawcard` CLI. All commands support `--json` for machine-readable output. Always pass `--json` when calling these commands.
 
-## Authentication
-
-All requests use your API key as a Bearer token:
+## Step 1: Check your identity
 
 ```
-Authorization: Bearer $CLAWCARD_API_KEY
+clawcard agent info --json
 ```
 
-The API key is stored in `~/.clawcard/.env`. Read `CLAWCARD_API_KEY` from that file.
-
-Base URL: `https://www.clawcard.sh`
-
-## Step 1: Discover Your Identity
-
-**Always call this first.** It tells you your keyId, email, phone, and budget — everything you need for subsequent calls.
-
-```
-GET /api/me
-```
-
-Response:
-```json
-{
-  "keyId": "agt_abc123",
-  "name": "my-agent",
-  "email": "inbox-7xk@mail.clawcard.sh",
-  "phone": "+12025551234",
-  "spendLimitCents": 5000
-}
-```
-
-Use the `keyId` as `KEY_ID` in all endpoints below.
+Returns your agent name, email address, phone number, and remaining budget.
 
 ## Email
 
-**Read inbox:**
+List inbox:
 ```
-GET /api/agents/KEY_ID/emails?limit=20&unread=true
-```
-
-Query params: `limit` (1-100, default 20), `unread` (true/false), `from` (filter by sender), `subject_contains` (search subject).
-
-**Send email:**
-```
-POST /api/agents/KEY_ID/emails/send
-Content-Type: application/json
-
-{"to": "recipient@example.com", "subject": "Hello", "body": "Message text"}
+clawcard agent emails --json [--limit 20] [--unread]
 ```
 
-**Mark as read:**
+Send email:
 ```
-POST /api/agents/KEY_ID/emails/EMAIL_ID/read
+clawcard agent emails send --to "recipient@example.com" --subject "Subject" --body "Body" --json
+```
+
+Mark as read:
+```
+clawcard agent emails read <email-id> --json
 ```
 
 ## SMS
 
-Your key has a dedicated US phone number for receiving SMS (e.g., verification codes).
-
-**Read received messages:**
+List messages:
 ```
-GET /api/agents/KEY_ID/sms?limit=50
+clawcard agent sms --json [--limit 20]
 ```
 
-**Send SMS:**
+Send SMS:
 ```
-POST /api/agents/KEY_ID/sms/send
-Content-Type: application/json
-
-{"to": "+15551234567", "body": "Hello from my agent!"}
+clawcard agent sms send --to "+15551234567" --body "Message" --json
 ```
 
 ## Virtual Cards
 
-You can create virtual Mastercards with per-card spend limits.
+IMPORTANT: Always list cards first. Reuse open merchant_locked cards for the same merchant.
 
-### Card Types (REQUIRED — you must specify one)
+Card types (REQUIRED — you must specify one):
+- single_use: auto-closes after one charge. Use for one-time purchases (domains, invoices).
+- merchant_locked: locks to first merchant, allows repeat charges. Use for subscriptions (hosting, SaaS).
 
-- **`single_use`** — Auto-closes after one successful transaction. Use for one-time purchases (buying a domain, paying an invoice).
-- **`merchant_locked`** — Locks to the first merchant that charges it, allows repeat charges from that merchant. Use for subscriptions and recurring payments (hosting, SaaS tools).
-
-### Important: Check existing cards first
-
-**Before creating a new card, always list existing cards.** If there's an open `merchant_locked` card for the same merchant, reuse it — this doesn't count against the monthly card limit.
-
-**List cards:**
+List cards:
 ```
-GET /api/agents/KEY_ID/cards
+clawcard agent cards --json
 ```
 
-Response includes all cards with `type`, `status`, and `spendLimitCents`. Look for cards with `status: "open"`.
-
-**Create a card:**
+Create card:
 ```
-POST /api/agents/KEY_ID/cards
-Content-Type: application/json
-
-{"amountCents": 2000, "type": "single_use", "memo": "Domain purchase"}
+clawcard agent cards create --amount <cents> --type <single_use|merchant_locked> --memo "description" --json
 ```
 
-The `type` field is **required**. Must be `"single_use"` or `"merchant_locked"`.
-
-Response includes full card details: `pan`, `cvv`, `exp_month`, `exp_year`.
-
-**Get card details (PAN, CVV, expiry):**
+Get card details (PAN, CVV, expiry):
 ```
-GET /api/agents/KEY_ID/cards/CARD_ID
+clawcard agent cards details <card-id> --json
 ```
 
-Use this to retrieve card details for any open card, including reusing a `merchant_locked` card.
-
-**Close a card:**
+Close card:
 ```
-PATCH /api/agents/KEY_ID/cards/CARD_ID
-Content-Type: application/json
-
-{"action": "close"}
+clawcard agent cards close <card-id> --json
 ```
 
-Actions: `"pause"`, `"resume"`, or `"close"` (permanent).
+## Credentials
 
-## Credentials Vault
+Store and retrieve secrets. Use consistent lowercase naming.
 
-Encrypted key-value storage for API keys and secrets you need at runtime.
+Naming convention:
+- --service: lowercase service name (openai, aws, stripe, vercel, namecheap)
+- --key: lowercase key type (api_key, secret_key, access_token, password)
 
-**List stored credentials (names only):**
+List stored credentials:
 ```
-GET /api/agents/KEY_ID/credentials
-```
-
-**Store a credential:**
-```
-POST /api/agents/KEY_ID/credentials
-Content-Type: application/json
-
-{"service": "aws", "key": "access_key", "value": "AKIA..."}
+clawcard agent creds --json
 ```
 
-**Retrieve a credential:**
+Store credential:
 ```
-GET /api/agents/KEY_ID/credentials/SERVICE/KEY
+clawcard agent creds set --service <name> --key <key> --value <secret> --json
 ```
 
-Example: `GET /api/agents/KEY_ID/credentials/openai/api_key`
+Retrieve credential:
+```
+clawcard agent creds get --service <name> --key <key> --json
+```
 
 ## Budget
 
-Budget controls how much you can spend on virtual cards.
-
-**Check remaining budget:**
+Check remaining budget:
 ```
-GET /api/agents/KEY_ID/budget
+clawcard agent budget --json
 ```
 
-**Allocate budget (moves funds from account balance to this key):**
+## Activity
+
+View activity log:
 ```
-POST /api/agents/KEY_ID/budget
-Content-Type: application/json
-
-{"amountCents": 2000}
-```
-
-## Activity Log
-
-Full audit trail of everything you've done.
-
-```
-GET /api/agents/KEY_ID/activity?limit=50
+clawcard agent activity --json [--limit 50]
 ```
 
 ## Tips
 
-- Always call `GET /api/me` first to discover your identity and available resources.
-- Check your budget before creating cards — `GET /api/agents/KEY_ID/budget`.
-- Reuse `merchant_locked` cards for repeat purchases at the same merchant.
-- Use `single_use` cards for one-time purchases — they auto-close after one charge.
-- Store credentials in the vault rather than hardcoding them.
+- Always run `clawcard agent info --json` first to verify your identity.
+- Check budget before creating cards: `clawcard agent budget --json`
+- Reuse merchant_locked cards for repeat purchases at the same merchant.
+- Use single_use cards for one-time purchases — they auto-close after one charge.
+- Store credentials in the vault with consistent naming so you can find them later.
