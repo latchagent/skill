@@ -141,7 +141,12 @@ View transaction history:
 clawcard agent wallet transactions --json
 ```
 
-Fund your wallet by sending USDC to your wallet address on Base. Check your address with `clawcard agent wallet --json`.
+Fund your wallet from your FIAT balance (2% conversion fee):
+```
+clawcard agent wallet fund --amount 10.00 --json
+```
+
+Or send USDC directly to your wallet address on Base. Check your address with `clawcard agent wallet --json`.
 
 ## Discover Services
 
