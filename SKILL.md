@@ -141,7 +141,7 @@ View transaction history:
 clawcard agent wallet transactions --json
 ```
 
-Fund your wallet from your FIAT balance (2% conversion fee):
+Fund your wallet (opens Coinbase — buy USDC with card, zero fees, sent directly to wallet):
 ```
 clawcard agent wallet fund --amount 10.00 --json
 ```
