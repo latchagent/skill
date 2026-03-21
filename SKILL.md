@@ -141,7 +141,7 @@ View transaction history:
 clawcard agent wallet transactions --json
 ```
 
-If wallet balance is low, FIAT budget auto-converts to USDC transparently.
+Fund your wallet by sending USDC to your wallet address on Base. Check your address with `clawcard agent wallet --json`.
 
 ## Discover Services
 
