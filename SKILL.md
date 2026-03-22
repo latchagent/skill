@@ -98,11 +98,15 @@ Close card:
 clawcard agent cards close <card-id> --json
 ```
 
-## Stablecoin Wallet (USDC on Base)
+## Stablecoin Wallet (USDC + pathUSD on Base)
 
-Your agent can have a USDC wallet for crypto payments, agent-to-agent transfers, and x402 API access.
+Your agent has a wallet on Base with three balances:
 
-**Use wallet for:** x402 APIs (HTTP 402 responses), crypto transfers, micropayments
+- **ETH** — gas fees (needed for on-chain transactions)
+- **USDC** — x402 protocol payments and direct transfers
+- **pathUSD** — MPP (Machine Payments Protocol) payments via Tempo/Stripe
+
+**Use wallet for:** x402 APIs (HTTP 402 responses), MPP services, crypto transfers, micropayments
 **Use cards for:** traditional merchant checkouts, websites with payment forms
 
 ### Setup
@@ -116,7 +120,7 @@ If you get `"No wallet found"`, create one via the API or run `clawcard agent wa
 
 ### Commands
 
-Check balance (shows USDC + FIAT spending power):
+Check balance (shows ETH, USDC, and pathUSD balances):
 ```
 clawcard agent wallet balance --json
 ```
@@ -131,20 +135,41 @@ Pay a URL via x402 (default — when a service returns HTTP 402):
 clawcard agent wallet send --url https://api.example.com/data --json
 ```
 
-Pay a URL via MPP (Machine Payments Protocol — Stripe/Tempo):
+Pay a URL via MPP (Machine Payments Protocol — Stripe/Tempo, uses pathUSD):
 ```
 clawcard agent wallet send --url https://api.example.com/data --protocol mpp --json
 ```
+
+**Explorer links:** Payment responses include explorer URLs. x402 transactions link to Basescan (`basescan.org/tx/...`), MPP and bridge transactions link to Tempo Explorer (`explore.tempo.xyz/receipt/...`).
 
 View transaction history:
 ```
 clawcard agent wallet transactions --json
 ```
 
-Fund your wallet (opens Coinbase — buy USDC with card, zero fees, sent directly to wallet):
+### Fund Wizard (3 options)
+
+The fund command is a wizard with three funding options:
+
+1. **Gas fees (ETH)** — opens Coinbase Onramp to buy ETH (needed for on-chain transactions)
+2. **x402 services (USDC)** — opens Coinbase Onramp to buy USDC (for x402 protocol payments)
+3. **MPP services (pathUSD)** — bridges USDC from your existing balance to pathUSD on Tempo (for MPP payments)
+
+Fund your wallet interactively (runs the wizard):
+```
+clawcard agent wallet fund
+```
+
+Fund via JSON (opens Coinbase Onramp for USDC/ETH):
 ```
 clawcard agent wallet fund --amount 10.00 --json
 ```
+
+### Bridge USDC to pathUSD
+
+To pay for MPP services, you need pathUSD. The fund wizard's "MPP services" option converts USDC from your wallet balance to pathUSD on Tempo. This is a bridge operation (USDC on Base -> pathUSD on Tempo).
+
+The bridge response includes both a Basescan link (Base transaction) and a Tempo Explorer link (Tempo receipt).
 
 Or send USDC directly to your wallet address on Base. Check your address with `clawcard agent wallet --json`.
 
