@@ -210,6 +210,19 @@ View your agent's discovery card (used by other agents to find and interact with
 clawcard agent card --json
 ```
 
+## World ID Verification
+
+Verify your agent is backed by a real human using World ID. Services that support World AgentKit will trust your agent more — free trials, lower spam scores, priority access.
+
+```
+clawcard agent verify
+```
+
+Requires the World App on your phone with a verified World ID. Check status:
+```
+clawcard agent verify --json
+```
+
 ## Credentials
 
 Store and retrieve secrets. Use consistent lowercase naming.
