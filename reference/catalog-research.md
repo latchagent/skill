@@ -1,18 +1,33 @@
 # Catalog: Research, GTM & Lead Gen
 
-Capabilities for web research, competitive intelligence, and lead generation. Currently stubbed — coming soon.
-
 ## How to call
 
 ```
 clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
 ```
 
-## Research (coming soon)
+## Research (live)
 
-- `web-search` ($0.005) — Search the web. Body: `{"query": "..."}`
-- `scrape-url` ($0.02) — Extract content from a URL. Body: `{"url": "..."}`
-- `deep-research` ($0.05) — In-depth research on any topic. Body: `{"topic": "..."}`
+### web-search ($0.005)
+Search the web with neural, auto, or deep search modes. Returns results with highlights and content.
+```json
+{"query": "Latest developments in LLM capabilities"}
+```
+Additional params: `type` (neural/auto/deep/instant), `numResults`, `category` (company/research paper/news/people), `includeDomains`, `excludeDomains`, `startPublishedDate`, `endPublishedDate`
+
+### scrape-url ($0.02)
+Extract full text, highlights, and summaries from any URL.
+```json
+{"url": "https://arxiv.org/abs/2307.06435"}
+```
+Pass multiple URLs: `{"urls": ["url1", "url2"]}`. Additional params: `text` (true or {maxCharacters}), `highlights`, `summary`
+
+### deep-research ($0.05)
+Get an LLM-generated answer with cited sources.
+```json
+{"topic": "What is the latest valuation of SpaceX?"}
+```
+Returns `{answer, citations}`. Supports `outputSchema` for structured JSON answers.
 
 ## GTM (coming soon)
 
