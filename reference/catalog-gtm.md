@@ -1,12 +1,14 @@
 # Catalog: GTM
 
+All powered by Apollo.
+
 ## How to call
 
 ```
 clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
 ```
 
-## Lead Gen (all live — powered by Apollo)
+## Capabilities
 
 ### find-contacts ($0.03)
 Find people by job title, company, location, seniority from a database of 270M+ contacts.
@@ -22,9 +24,12 @@ Get company data — funding, revenue, employee count, tech stack, social links.
 ```
 Also accepts: `name` (company name), `organization_ids[]`, `organization_locations[]`
 
-## GTM (all live — powered by Apollo)
-
-### keyword-research ($0.01) — coming soon
+### enrich-prospect ($0.02)
+Enrich a person's data — title, company, email, LinkedIn, employment history.
+```json
+{"email": "tim@apollo.io"}
+```
+Also accepts: `name`, `first_name`/`last_name`, `domain`, `linkedin_url`, `organization_name`. More fields = better match.
 
 ### competitor-analysis ($0.02)
 Get a company's active job postings — see where they're growing headcount.
@@ -39,12 +44,3 @@ Find news articles about companies — hires, funding, contracts, and more.
 {"domain": "apollo.io"}
 ```
 Additional params: `categories[]` (hires/investment/contract), `published_at[min]`, `published_at[max]`, `page`, `per_page`
-
-## Ops (live — powered by Apollo)
-
-### enrich-prospect ($0.02)
-Enrich a person's data — title, company, email, LinkedIn, employment history.
-```json
-{"email": "tim@apollo.io"}
-```
-Also accepts: `name`, `first_name`/`last_name`, `domain`, `linkedin_url`, `organization_name`. More fields = better match.
