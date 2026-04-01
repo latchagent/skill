@@ -8,7 +8,7 @@ clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" 
 
 ## Capabilities (all live)
 
-### web-search ($0.005) — powered by Exa
+### web-search ($0.01) — powered by Exa
 Search the web with neural, auto, or deep search modes. Returns results with highlights and content.
 ```json
 {"query": "Latest developments in LLM capabilities"}
