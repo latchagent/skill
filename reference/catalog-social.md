@@ -5,7 +5,7 @@ Scrape public social media data across 15+ platforms. All calls use x402 payment
 ## How to call
 
 ```
-clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
+clawcard agent wallet send --url "https://www.clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
 ```
 
 ## Capabilities
