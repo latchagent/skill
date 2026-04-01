@@ -44,9 +44,8 @@ clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" 
 | Capability | Price | Reference |
 |---|---|---|
 | Social Data (15+ platforms) | $0.02-0.03 | [reference/catalog-social.md](reference/catalog-social.md) |
-| Web Research (search, scrape, deep research) | $0.005-0.05 | [reference/catalog-research.md](reference/catalog-research.md) |
-| GTM (keywords, competitor analysis) | $0.01-0.02 | [reference/catalog-research.md](reference/catalog-research.md) |
-| Lead Gen (contacts, company enrichment) | $0.02-0.03 | [reference/catalog-research.md](reference/catalog-research.md) |
+| Web Research (search, scrape, deep research) | $0.005-0.10 | [reference/catalog-research.md](reference/catalog-research.md) |
+| GTM (contacts, enrichment, company news, competitor analysis) | $0.02-0.03 | [reference/catalog-gtm.md](reference/catalog-gtm.md) |
 | Content (image gen, UGC, SEO) | $0.05-0.10 | [reference/catalog-content.md](reference/catalog-content.md) |
 
 ## Tips
