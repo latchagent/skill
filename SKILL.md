@@ -321,3 +321,100 @@ Returns: name, line1, line2, city, state, zip, country.
 - Store credentials with consistent naming so you can find them later.
 - If you need a capability (search, enrichment, scraping, etc.), discover it: `clawcard agent discover --query "..." --json`
 - If a service returns HTTP 402, your wallet can pay for it automatically.
+
+## Catalog — Included Capabilities
+
+Your agent has access to paid API capabilities included with ClawCard. All calls use x402 payment via your wallet.
+
+Browse the catalog:
+```
+clawcard agent catalog --json
+```
+
+### How to call a catalog capability
+
+All catalog capabilities are called via wallet send:
+```
+clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
+```
+
+The endpoint handles x402 payment automatically. Your wallet is charged the listed price per request.
+
+### Available Capabilities
+
+**Research:**
+- `web-search` ($0.005) — Search the web. Body: `{"query": "..."}`
+- `scrape-url` ($0.02) — Extract content from a URL. Body: `{"url": "..."}`
+- `deep-research` ($0.05) — In-depth research. Body: `{"topic": "..."}`
+
+**GTM:**
+- `keyword-research` ($0.01) — Keyword opportunities. Body: `{"keyword": "..."}`
+- `competitor-analysis` ($0.02) — Competitor analysis. Body: `{"domain": "..."}`
+
+**Lead Gen:**
+- `find-contacts` ($0.03) — Find contacts. Body: `{"company": "..."}`
+- `enrich-company` ($0.02) — Company data. Body: `{"domain": "..."}`
+
+**Content:**
+- `generate-image` ($0.05, async) — Generate images. Body: `{"prompt": "..."}`
+- `generate-ugc` ($0.10, async) — Generate UGC video. Body: `{"prompt": "..."}`
+- `seo-content` ($0.05) — SEO content. Body: `{"keyword": "..."}`
+
+**Ops:**
+- `enrich-prospect` ($0.02) — Prospect enrichment. Body: `{"email": "..."}`
+
+**Social Data (live — 15+ platforms):**
+- `social-profile` ($0.02) — Get a creator's profile (followers, bio, stats). Body: `{"platform": "tiktok", "handle": "..."}`
+- `social-posts` ($0.03) — Get recent posts/videos. Body: `{"platform": "instagram", "handle": "..."}`
+- `social-search` ($0.02) — Search content by keyword. Body: `{"platform": "youtube", "query": "..."}`
+- `social-post` ($0.02) — Get details on a specific post/video. Body: `{"url": "https://tiktok.com/..."}` (platform auto-detected from URL)
+- `social-comments` ($0.02) — Get comments on a post. Body: `{"url": "https://youtube.com/watch?v=..."}` (platform auto-detected)
+- `social-transcript` ($0.03) — Get video transcript. Body: `{"url": "https://youtube.com/watch?v=..."}` (platform auto-detected)
+
+Platforms: tiktok, instagram, youtube, twitter/x, linkedin, facebook, reddit, threads, bluesky, snapchat, truthsocial, pinterest, twitch, kick, google
+
+For URL-based capabilities (social-post, social-comments, social-transcript), the platform is auto-detected from the URL domain. You can also pass `"platform"` explicitly to override.
+
+For full catalog details with all supported platforms per capability, run: `clawcard agent catalog --json`
+
+### Async capabilities
+
+Some capabilities (generate-image, generate-ugc) are async. They return a `jobId` instead of immediate results:
+
+```json
+{"jobId": "job_abc123", "status": "pending"}
+```
+
+Poll for completion:
+```
+clawcard agent jobs status <job-id> --json
+```
+
+When complete, download the artifact:
+```
+clawcard agent artifacts download <art-id> --json
+```
+
+## Artifacts
+
+List artifacts:
+```
+clawcard agent artifacts list --json
+```
+
+Download artifact:
+```
+clawcard agent artifacts download <art-id> --json
+```
+
+## Jobs
+
+List async jobs:
+```
+clawcard agent jobs list --json
+```
+
+Check job status:
+```
+clawcard agent jobs status <job-id> --json
+```
