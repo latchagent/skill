@@ -3,7 +3,7 @@
 ## How to call
 
 ```
-clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
+clawcard agent wallet send --url "https://www.clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
 ```
 
 ## Capabilities (all live)
@@ -43,7 +43,7 @@ Models: `exa-research-fast`, `exa-research` (default), `exa-research-pro`
 
 Poll for results (no additional payment needed):
 ```
-curl https://clawcard.sh/api/catalog/research-task/status?researchId=01jsz...
+curl https://www.clawcard.sh/api/catalog/research-task/status?researchId=01jsz...
 ```
 
 When `status` is `completed`, the `output.content` field contains the full research report. Supports `outputSchema` for structured JSON output.
