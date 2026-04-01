@@ -5,7 +5,7 @@ All powered by Apollo.
 ## How to call
 
 ```
-clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
+clawcard agent wallet send --url "https://www.clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
 ```
 
 ## Capabilities
