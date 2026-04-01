@@ -29,6 +29,27 @@ Get an LLM-generated answer with cited sources.
 ```
 Returns `{answer, citations}`. Supports `outputSchema` for structured JSON answers.
 
+### research-task ($0.10, async)
+Launch a deep async research task that explores the web, gathers sources, and returns a detailed report with citations. Powered by Exa.
+```json
+{"instructions": "Summarize the latest developments in AI safety research"}
+```
+Models: `exa-research-fast`, `exa-research` (default), `exa-research-pro`
+
+**This is async.** The response returns a `researchId` and `pollUrl`:
+```json
+{"researchId": "01jsz...", "status": "pending", "pollUrl": "/api/catalog/research-task/status?researchId=01jsz..."}
+```
+
+Poll for results (no additional payment needed):
+```
+curl https://clawcard.sh/api/catalog/research-task/status?researchId=01jsz...
+```
+
+When `status` is `completed`, the `output.content` field contains the full research report.
+
+Supports `outputSchema` for structured JSON output — pass a JSON Schema and the research output will match it.
+
 ## GTM (coming soon)
 
 - `keyword-research` ($0.01) — Keyword opportunities with volume data. Body: `{"keyword": "..."}`
