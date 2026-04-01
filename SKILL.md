@@ -36,7 +36,7 @@ Your agent has access to paid API capabilities via the catalog. All calls use x4
 
 **How to call any capability:**
 ```
-clawcard agent wallet send --url "https://clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
+clawcard agent wallet send --url "https://www.clawcard.sh/api/catalog/<capability>" --method POST --body '<json>' --json
 ```
 
 **Browse full catalog:** `clawcard agent catalog --json`
