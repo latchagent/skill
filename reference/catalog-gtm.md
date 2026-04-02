@@ -27,9 +27,9 @@ Also accepts: `name` (company name), `organization_ids[]`, `organization_locatio
 ### enrich-prospect ($0.02)
 Enrich a person's data — title, company, email, LinkedIn, employment history.
 ```json
-{"email": "tim@apollo.io"}
+{"name": "Tim Zheng", "domain": "apollo.io"}
 ```
-Also accepts: `name`, `first_name`/`last_name`, `domain`, `linkedin_url`, `organization_name`. More fields = better match.
+Also accepts: `email`, `first_name`/`last_name`, `linkedin_url`, `organization_name`, `id` (Apollo person ID). More fields = better match.
 
 ### competitor-analysis ($0.02)
 Get a company's active job postings — see where they're growing headcount.
