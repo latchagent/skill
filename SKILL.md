@@ -92,7 +92,7 @@ For purchasing things on websites (domains, subscriptions, SaaS signups), use th
 
 **Setup:** If the browser MCP tools aren't available, help the user configure it:
 
-- **Claude Code:** `clawcard mcp` or `claude mcp add -e CLAWCARD_API_KEY=<key> clawcard-browser -- npx @clawcard/browser`
+- **Claude Code:** `clawcard mcp` or `claude mcp add clawcard-browser -e CLAWCARD_API_KEY=<key> -- npx @clawcard/browser`
 - **mcporter (OpenClaw, etc.):** Add to `~/.mcporter/mcporter.json`:
   ```json
   "clawcard-browser": {
