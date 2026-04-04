@@ -90,6 +90,19 @@ Status slugs for async capabilities:
 
 For purchasing things on websites (domains, subscriptions, SaaS signups), use the `clawcard-browser` MCP server. It launches a browser with the ClawCard Pay extension.
 
+**Setup:** If the browser MCP tools aren't available, help the user configure it:
+
+- **Claude Code:** `clawcard mcp` or `claude mcp add -e CLAWCARD_API_KEY=<key> clawcard-browser -- npx @clawcard/browser`
+- **mcporter (OpenClaw, etc.):** Add to `~/.mcporter/mcporter.json`:
+  ```json
+  "clawcard-browser": {
+    "command": "npx",
+    "args": ["@clawcard/browser"],
+    "env": { "CLAWCARD_API_KEY": "<key>" }
+  }
+  ```
+- **Cursor / VS Code:** Add to `.cursor/mcp.json` or MCP config with same shape as above
+
 **Flow:**
 1. Create a card: `clawcard agent cards create --amount <cents> --type merchant_locked --memo "description" --json`
 2. Launch browser: `launch_browser` tool with the checkout URL
