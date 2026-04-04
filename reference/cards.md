@@ -1,5 +1,11 @@
 # Virtual Cards
 
+## Beta Limits
+
+- **$50 max** per card
+- **2 cards per month** per account
+- Cards are merchant-locked (lock to first merchant used)
+
 ## MANDATORY: Check existing cards FIRST
 
 **Before EVERY payment, run:**
@@ -29,6 +35,10 @@ Create card (ONLY after confirming no existing card works):
 ```
 clawcard agent cards create --amount <cents> --type <single_use|merchant_locked> --memo "description" --json
 ```
+
+- Minimum: 100 cents ($1.00)
+- Maximum: 5000 cents ($50.00)
+- You must have sufficient agent budget allocated first
 
 Get card details (PAN, CVV, expiry):
 ```
